@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /> <!-- Sets character encoding for the page -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Makes the page mobile-friendly -->
+  <title>Delivery Tracking - Afropot</title> <!-- Page title shown in browser tab -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /> <!-- Links to icons library -->
+  <style>
+    body {
+      font-family: "Poppins", sans-serif; /* Font for the whole page */
+      margin: 0; /* No extra space around edges */
+      background: #f5f9f4; /* Light green background */
+      color: #1a2d16; /* Dark green text */
+      line-height: 1.6; /* Spacing between lines */
+    }
+    /* ✅ NAVBAR - This is the header with logo and links */
+    .navbar {
+      background: #76b852; /* Green background */
+      display: flex; /* Layout for logo and links side-by-side */
+      justify-content: space-between; /* Space between logo and links */
+      align-items: center; /* Vertically center items */
+      padding: 1rem 2rem; /* Padding inside */
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2); /* Shadow below */
+      position: sticky; /* Makes it stick to top when scrolling */
+      top: 0; /* Sticks to the very top */
+      z-index: 1000; /* Ensures it's on top of other elements */
+    }
+    .logo { font-size: 1.8rem; font-weight: 800; color: #1a2d16; } /* Styles for logo text */
+    .nav-links {
+      list-style: none; /* No bullets for list */
+      display: flex; /* Horizontal layout */
+      gap: 1.2rem; /* Space between links */
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none; /* No underline on links */
+      color: #000; /* Black text */
+      font-weight: 600; /* Bold */
+      padding: 6px 10px; /* Padding around text */
+      border-radius: 6px; /* Rounded corners */
+      transition: all 0.3s ease; /* Smooth hover effect */
+    }
+    .nav-links a:hover {
+      background: rgba(0, 0, 0, 0.1); /* Light gray background on hover */
+      color: #fff; /* White text on hover */
+    }
+    /* ✅ DELIVERY BOX - Main content area */
+    .delivery-container {
+      max-width: 800px; /* Limits width for readability */
+      margin: 2.5rem auto; /* Centers it with space above/below */
+      background: #fff; /* White background */
+      padding: 2rem; /* Inner space */
+      border-radius: 12px; /* Rounded corners */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Light shadow */
+      text-align: center; /* Center text */
+    }
+    h2 {
+      color: #0f3314; /* Darker green for heading */
+      margin-bottom: 1rem; /* Space below */
+    }
+    .order-details {
+      text-align: left; /* Left-align for details */
+      margin-top: 1rem; /* Space above */
+      margin-bottom: 1rem; /* Space below */
+      padding: 1.2rem; /* Inner space */
+      background: #eafbe0; /* Light green background */
+      border-radius: 8px; /* Rounded */
+      border-left: 6px solid #76b852; /* Green left border */
+    }
+    .order-details p {
+      margin: 0.5rem 0; /* Space between paragraphs */
+    }
+    /* ✅ DELIVERY STATUS BAR - Progress indicator */
+    .status-bar {
+      margin-top: 2rem; /* Space above */
+      background: #e0e0e0; /* Gray background */
+      border-radius: 20px; /* Very rounded */
+      overflow: hidden; /* Hides overflow */
+      height: 22px; /* Height */
+      position: relative; /* For positioning child */
+    }
+    .status-progress {
+      background: linear-gradient(90deg, #76b852, #8de264); /* Green gradient */
+      height: 100%; /* Full height */
+      width: 0%; /* Starts at 0, animates wider */
+      border-radius: 20px; /* Rounded */
+      transition: width 1s ease; /* Smooth animation */
+    }
+    .status-text {
+      margin-top: 1rem; /* Space above */
+      font-weight: 600; /* Bold */
+      color: #0f3314; /* Dark green */
+    }
+    /* ✅ BUTTON TO VIEW HISTORY */
+    .history-btn {
+      background: #1a2d16; /* Dark green */
+      color: #fff; /* White text */
+      border: none; /* No border */
+      padding: 0.9rem 1.5rem; /* Padding */
+      border-radius: 8px; /* Rounded */
+      font-weight: 600; /* Bold */
+      font-size: 1rem; /* Size */
+      margin-top: 1.8rem; /* Space above */
+      cursor: pointer; /* Hand icon on hover */
+      transition: background 0.3s ease; /* Smooth hover */
+    }
+    .history-btn:hover {
+      background: #2d4a22; /* Darker green on hover */
+    }
+    /* ✅ MAP - Google Maps embed */
+    .map {
+      width: 100%; /* Full width */
+      height: 350px; /* Height */
+      border: none; /* No border */
+      border-radius: 12px; /* Rounded */
+      margin-top: 2rem; /* Space above */
+    }
+    /* ✅ FOOTER */
+    footer {
+      background: #0f3314; /* Dark green */
+      color: #fff; /* White text */
+      text-align: center; /* Center */
+      padding: 1.5rem; /* Padding */
+      margin-top: 3rem; /* Space above */
+    }
+    @media(max-width: 600px) { /* Styles for small screens (mobile) */
+      .delivery-container {
+        margin: 1rem; /* Less margin */
+        padding: 1.5rem; /* Less padding */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ✅ NAVBAR - Header with logo and navigation links -->
+  <header class="navbar">
+    <h1 class="logo">Afropot</h1>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="catering.html">Catering</a></li>
+      <li><a href="orders.html">My Orders</a></li>
+    </ul>
+  </header>
+  <!-- ✅ DELIVERY TRACKING BOX - Main section showing order info and tracking -->
+  <section class="delivery-container">
+    <h2>🚚 Order Delivery Tracking</h2>
+    <div id="orderInfo" class="order-details"> <!-- Placeholder for order details -->
+      <p><strong>Order ID:</strong> —</p>
+      <p><strong>Name:</strong> —</p>
+      <p><strong>Address:</strong> —</p>
+      <p><strong>Total:</strong> —</p>
+      <p><strong>Payment:</strong> —</p>
+      <p><strong>Status:</strong> <span id="statusText">Loading...</span></p>
+    </div>
+    <div class="status-bar"> <!-- Progress bar container -->
+      <div class="status-progress" id="progressBar"></div> <!-- Animated bar -->
+    </div>
+    <p class="status-text" id="statusNote">Preparing your delicious meal...</p> <!-- Status message -->
+    <!-- ✅ VIEW ORDER HISTORY BUTTON - Links back to orders page -->
+    <button class="history-btn" onclick="window.location.href='orders.html'">
+      📜 View Order History
+    </button>
+    <iframe
+      class="map" <!-- Embedded Google Map -->
+      src="https://www.google.com/maps?q=Konrad-Zuse-Ring+11,+14469+Potsdam,+Germany&output=embed"
+      allowfullscreen=""
+      loading="lazy">
+    </iframe>
+  </section>
+  <!-- ✅ FOOTER - Bottom copyright info -->
+  <footer>
+    © 2026 Afropot | Nigerian Food Ordering & Delivery Platform | All Rights Reserved.
+  </footer>
+  <!-- ✅ SCRIPT - JavaScript for functionality -->
+  <script>
+    // ✅ Process pending order on page load if coming from successful payment
+    // This checks if payment succeeded and saves the order
+    function processPendingOrder() {
+      const urlParams = new URLSearchParams(window.location.search); // Gets URL params like ?success=true
+      const isSuccess = urlParams.get('success') === 'true'; // Check if success
+      const pendingOrder = JSON.parse(localStorage.getItem('afropotPendingOrder')); // Get temp order from storage
+      if (isSuccess && pendingOrder) { // If success and order exists
+        let allOrders = JSON.parse(localStorage.getItem('afropotAllOrders')) || []; // Load all orders or empty array
+        allOrders.push(pendingOrder); // Add new order
+        localStorage.setItem('afropotAllOrders', JSON.stringify(allOrders)); // Save back
+        // Clear cart and pending order
+        localStorage.removeItem('afropotCart');
+        localStorage.removeItem('afropotPendingOrder');
+        // Optional: Alert success
+        alert('✅ Payment successful! Your order is being processed.');
+      } else if (!isSuccess) {
+        // If not success (e.g., direct access or cancel), clear pending
+        localStorage.removeItem('afropotPendingOrder');
+      }
+    }
+    // Run the function when page loads
+    window.addEventListener('load', processPendingOrder);
+
+    // Load last order from storage and display details
+    const allOrders = JSON.parse(localStorage.getItem('afropotAllOrders')) || []; // Get all orders
+    const lastOrderIndex = allOrders.length - 1; // Index of latest
+    const lastOrder = allOrders[lastOrderIndex]; // Latest order
+    const orderInfo = document.getElementById('orderInfo'); // Details container
+    const progressBar = document.getElementById('progressBar'); // Progress element
+    const statusText = document.getElementById('statusText'); // Status span
+    const statusNote = document.getElementById('statusNote'); // Note paragraph
+    if (!lastOrder) { // If no order
+      orderInfo.innerHTML = '<p>No recent order found. Please make an order first.</p>';
+    } else { // Fill in details
+      orderInfo.innerHTML = `
+        <p><strong>Order ID:</strong> ${lastOrder.orderId}</p>
+        <p><strong>Name:</strong> ${lastOrder.customer.name}</p>
+        <p><strong>Address:</strong> ${lastOrder.customer.address}</p>
+        <p><strong>Total:</strong> €${lastOrder.total.toFixed(2)}</p>
+        <p><strong>Payment:</strong> ${lastOrder.payment}</p>
+        <p><strong>Status:</strong> <span id="statusText">${lastOrder.status}</span></p>
+      `;
+    }
+    // ✅ Animate and Save Delivery Status Progress
+    // This simulates progress over time
+    let progress = 0; // Start at 0%
+    let stage = 0; // Current stage
+    const stages = [ // Array of stages with % limits and texts
+      { limit: 30, text: "Preparing your delicious meal..." },
+      { limit: 70, text: "Out for delivery 🚗💨" },
+      { limit: 100, text: "Order delivered! 🎉 Enjoy your meal 🍲" }
+    ];
+    const timer = setInterval(() => { // Run every 150ms
+      progress += 1; // Increase by 1%
+      if (progress > 100) { // Stop at 100%
+        clearInterval(timer);
+        return;
+      }
+      progressBar.style.width = progress + "%"; // Update bar width
+      if (progress === stages[stage].limit) { // If hit stage limit
+        const currentStage = stages[stage];
+        statusNote.textContent = currentStage.text; // Update note
+        statusText.textContent = currentStage.text; // Update status
+        // ✅ Save current status in localStorage
+        allOrders[lastOrderIndex].status = currentStage.text.includes("delivered") ? "Delivered" : currentStage.text;
+        localStorage.setItem("afropotAllOrders", JSON.stringify(allOrders));
+        stage++; // Next stage
+      }
+    }, 150); // ~15 seconds total
+  </script>
+</body>
+</html>

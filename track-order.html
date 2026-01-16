@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track My Orders | Afropot</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f5f9f4;
+      margin: 0;
+      padding: 0;
+      color: #1a2d16;
+    }
+
+    header.navbar {
+      background-color: #76b852;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: white;
+    }
+
+    header.navbar h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .track-section {
+      max-width: 900px;
+      background: white;
+      margin: 3rem auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .track-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .track-btn {
+      background-color: #76b852;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .track-btn:hover {
+      background-color: #5f9e43;
+    }
+
+    .orders-list {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .order-card {
+      background: #f0f7ef;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: left;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .order-card h3 {
+      margin: 0 0 0.5rem;
+      color: #1a2d16;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 1rem;
+      height: 10px;
+    }
+
+    .progress {
+      height: 10px;
+      width: 0%;
+      background-color: #76b852;
+      transition: width 2s ease;
+    }
+
+    .reorder-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+
+    .reorder-btn:hover {
+      background-color: #45a049;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer.footer-bottom {
+      background-color: #76b852;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <h1>Track My Orders - Afropot</h1>
+</header>
+
+<section class="track-section">
+  <h2>Enter Your Email or Order ID</h2>
+  <input type="text" id="orderInput" placeholder="e.g. respectme060@gmail.com or #AFR1234">
+  <br>
+  <button class="track-btn" onclick="trackOrders()">Track Orders</button>
+
+  <div id="ordersContainer" class="orders-list"></div>
+</section>
+
+<footer class="footer-bottom">
+  <p>© 2025 Afropot | Nigerian Food Ordering & Delivery Platform | All Rights Reserved.</p>
+</footer>
+
+<script>
+function trackOrders() {
+  const input = document.getElementById("orderInput").value.trim();
+  const container = document.getElementById("ordersContainer");
+  container.innerHTML = "";
+
+  const allOrders = JSON.parse(localStorage.getItem("afropotOrders")) || [];
+  const lastOrder = JSON.parse(localStorage.getItem("afropotLastOrder"));
+  if (lastOrder) allOrders.push(lastOrder);
+
+  if (allOrders.length === 0) {
+    container.innerHTML = "<p>No previous orders found.</p>";
+    return;
+  }
+
+  const matchingOrders = allOrders.filter(o =>
+    o.email.toLowerCase() === input.toLowerCase() || o.orderId === input
+  );
+
+  if (matchingOrders.length === 0) {
+    container.innerHTML = "<p>⚠️ No orders match that email or ID.</p>";
+    return;
+  }
+
+  matchingOrders.forEach(order => {
+    const card = document.createElement("div");
+    card.className = "order-card";
+    card.innerHTML = `
+      <h3>Order ID: ${order.orderId}</h3>
+      <p><b>Name:</b> ${order.name}</p>
+      <p><b>Email:</b> ${order.email}</p>
+      <p><b>Total:</b> €${order.total}</p>
+      <p><b>Payment:</b> ${order.payment}</p>
+      <p><b>Delivery:</b> ${order.address || "N/A"}</p>
+      <div class="progress-bar"><div class="progress"></div></div>
+      <p id="status-${order.orderId}" style="margin-top:8px;">🕒 Checking status...</p>
+      <button class="reorder-btn" onclick='reorder(${JSON.stringify(order.items)})'>Reorder 🍽️</button>
+    `;
+    container.appendChild(card);
+
+    // Animate tracking simulation
+    simulateProgress(order.orderId);
+  });
+}
+
+function simulateProgress(id) {
+  const progress = document.querySelector(`#status-${id}`).previousElementSibling.firstElementChild;
+  const statusText = document.getElementById(`status-${id}`);
+
+  let step = 0;
+  const steps = [
+    ["📦 Order confirmed", "25%"],
+    ["👨‍🍳 Preparing your meal", "55%"],
+    ["🚚 Out for delivery", "85%"],
+    ["✅ Delivered successfully!", "100%"]
+  ];
+
+  function nextStep() {
+    if (step < steps.length) {
+      const [text, width] = steps[step];
+      statusText.textContent = text;
+      progress.style.width = width;
+      step++;
+      setTimeout(nextStep, 2000);
+    }
+  }
+  nextStep();
+}
+
+function reorder(items) {
+  localStorage.setItem("afropotCart", JSON.stringify(items));
+  alert("✅ Items added to cart again!");
+  window.location.href = "menu.html";
+}
+</script>
+
+</body>
+</html>
